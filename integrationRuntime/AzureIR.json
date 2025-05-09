@@ -1,5 +1,5 @@
 {
-	"name": "azureIR",
+	"name": "AzureIR",
 	"properties": {
 		"type": "Managed",
 		"typeProperties": {
