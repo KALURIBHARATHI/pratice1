@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "cherithadf"
+		},
+		"LS_BLOB STORAGE_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage275_properties_privateLinkResourceId": {
+			"value": "/subscriptions/c9a87b2b-d955-4316-81fe-9fb0a1f8e759/resourceGroups/PRATICE1/providers/Microsoft.Storage/storageAccounts/pratice1adf"
+		},
+		"AzureBlobStorage275_properties_groupId": {
+			"value": "blob"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

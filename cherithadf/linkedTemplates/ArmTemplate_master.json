@@ -1,0 +1,63 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "cherithadf"
+		},
+		"LS_BLOB STORAGE_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_BLOB STORAGE'"
+		},
+		"AzureBlobStorage275_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/c9a87b2b-d955-4316-81fe-9fb0a1f8e759/resourceGroups/PRATICE1/providers/Microsoft.Storage/storageAccounts/pratice1adf"
+		},
+		"AzureBlobStorage275_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "cherithadf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_BLOB STORAGE_connectionString": {
+						"value": "[parameters('LS_BLOB STORAGE_connectionString')]"
+					},
+					"AzureBlobStorage275_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureBlobStorage275_properties_privateLinkResourceId')]"
+					},
+					"AzureBlobStorage275_properties_groupId": {
+						"value": "[parameters('AzureBlobStorage275_properties_groupId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
