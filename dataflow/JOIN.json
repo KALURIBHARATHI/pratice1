@@ -1,0 +1,53 @@
+{
+	"name": "JOIN",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "EMP",
+						"type": "DatasetReference"
+					},
+					"name": "EMP"
+				},
+				{
+					"dataset": {
+						"referenceName": "MAIL",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "join1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {EMP_ID } as string,",
+				"          NAME as string,",
+				"          SALARY as string,",
+				"          {DEPARTMENT NAME} as string,",
+				"          BRANCH as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> EMP",
+				"source(output(",
+				"          emp as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"EMP, source1 join(ERROR_FUNCTION('') == emp,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1"
+			]
+		}
+	}
+}
