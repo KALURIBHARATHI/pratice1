@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "FLAT FILE SOURCE.txt",
-				"container": "source"
+				"container": "destinaction"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
