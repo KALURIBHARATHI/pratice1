@@ -26,9 +26,34 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
+					{
+						"referenceName": "notepad",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
 					{
 						"referenceName": "notepad",
 						"type": "DatasetReference"
@@ -36,13 +61,13 @@
 				]
 			},
 			{
-				"name": "Copy data1",
+				"name": "archieve",
 				"type": "Copy",
 				"dependsOn": [
 					{
 						"activity": "process filesfromsource-sink",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -95,10 +120,49 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "notepad",
+						"referenceName": "archieveblob",
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Deletefiletosource",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "archieve",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "notepad",
+						"type": "DatasetReference"
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "LS_BLOB STORAGE",
+							"type": "LinkedServiceReference"
+						},
+						"path": "logings"
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
 			}
 		],
 		"annotations": []
