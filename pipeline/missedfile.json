@@ -1,0 +1,232 @@
+{
+	"name": "missedfile",
+	"properties": {
+		"activities": [
+			{
+				"name": "source",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_blob_source",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "sink",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "dsblobdestinaction",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "countsource",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "source",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "sourcecount",
+					"value": {
+						"value": "@{length(activity('source').output.childItems)}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "destinaction",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "sink",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "destinactioncount",
+					"value": {
+						"value": "@{length(activity('sink').output.childItems)}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "missed",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "destinaction",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "countsource",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "missed count",
+					"value": {
+						"value": "@{sub(int(variables('sourcecount')),int(variables('destinactioncount')))}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "missedfile",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "missed",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('missed count'),0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Filter1",
+							"type": "Filter",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@activity('source').output.childItems",
+									"type": "Expression"
+								},
+								"condition": {
+									"value": "@not(contains(activity('sink').output.childItems,item()))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Filter1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "pipeline2",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"filename": {
+										"value": "@activity('Filter1').output.value",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Wait",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 1
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"sourcecount": {
+				"type": "String"
+			},
+			"destinactioncount": {
+				"type": "String"
+			},
+			"missed count": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
