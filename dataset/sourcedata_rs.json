@@ -1,0 +1,52 @@
+{
+	"name": "sourcedata_rs",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_BLOB STORAGE",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"container": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ID",
+				"type": "String"
+			},
+			{
+				"name": "NAME",
+				"type": "String"
+			},
+			{
+				"name": "DATE OF BIRTH",
+				"type": "String"
+			},
+			{
+				"name": "GENDER",
+				"type": "String"
+			},
+			{
+				"name": "SALARY PER MONTH IN RS",
+				"type": "String"
+			}
+		]
+	}
+}
