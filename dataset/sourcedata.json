@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"archievefile": {
+			"filenmae": {
 				"type": "String"
 			}
 		},
