@@ -1,0 +1,28 @@
+{
+	"name": "DelimitedText20",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_BLOB STORAGE",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "output1.txt",
+				"folderPath": "textdata",
+				"container": "source"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	}
+}
