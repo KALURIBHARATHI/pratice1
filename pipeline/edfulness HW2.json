@@ -1,0 +1,77 @@
+{
+	"name": "edfulness HW2",
+	"properties": {
+		"activities": [
+			{
+				"name": "LENGTH",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LENGTH",
+					"value": "10"
+				}
+			},
+			{
+				"name": "BREADTH",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "BREADTH",
+					"value": 5
+				}
+			},
+			{
+				"name": "AREA",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "BREADTH",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "LENGTH",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "AREA",
+					"value": {
+						"value": "@mul(int(variables('LENGTH')), int(variables('BREADTH')))\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"LENGTH": {
+				"type": "String"
+			},
+			"BREADTH": {
+				"type": "Integer"
+			},
+			"AREA": {
+				"type": "Integer"
+			}
+		},
+		"annotations": []
+	}
+}
