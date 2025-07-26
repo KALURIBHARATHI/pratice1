@@ -1,0 +1,77 @@
+{
+	"name": "efdvariable dynamical3",
+	"properties": {
+		"activities": [
+			{
+				"name": "length",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "length",
+					"value": 10
+				}
+			},
+			{
+				"name": "breadth",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "breadth",
+					"value": 20
+				}
+			},
+			{
+				"name": "area",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "length",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "breadth",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "area",
+					"value": {
+						"value": "@mul(variables('length'),variables('breadth'))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"length": {
+				"type": "Integer"
+			},
+			"breadth": {
+				"type": "Integer"
+			},
+			"area": {
+				"type": "Integer"
+			}
+		},
+		"annotations": []
+	}
+}
