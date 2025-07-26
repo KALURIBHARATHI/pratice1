@@ -1,0 +1,77 @@
+{
+	"name": "EDFULNESSHW3",
+	"properties": {
+		"activities": [
+			{
+				"name": "A",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "a",
+					"value": 6
+				}
+			},
+			{
+				"name": "b",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "b",
+					"value": 5
+				}
+			},
+			{
+				"name": "result",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "A",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "b",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "a+b",
+					"value": {
+						"value": "@mul(add(int(variables('a')), int(variables('b'))), add(int(variables('a')), int(variables('b'))))\r\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"a": {
+				"type": "Integer"
+			},
+			"b": {
+				"type": "Integer"
+			},
+			"a+b": {
+				"type": "Integer"
+			}
+		},
+		"annotations": []
+	}
+}
