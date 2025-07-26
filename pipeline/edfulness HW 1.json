@@ -1,0 +1,109 @@
+{
+	"name": "edfulness HW 1",
+	"properties": {
+		"activities": [
+			{
+				"name": "AZURE",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "AZURE",
+					"value": {
+						"value": "@variables('RESULT')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "DATA",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DATA",
+					"value": {
+						"value": "@variables('RESULT')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ENGINER",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ENGINERING",
+					"value": {
+						"value": "@variables('RESULT')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "AZUREDATAENGINER",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "AZURE",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "DATA",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "ENGINER",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "RESULT",
+					"value": {
+						"value": "\n\n\n\n\n@concat('Azure',  'Data', 'ENGINERING')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"AZURE": {
+				"type": "String"
+			},
+			"DATA": {
+				"type": "String"
+			},
+			"ENGINERING": {
+				"type": "String"
+			},
+			"RESULT": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
