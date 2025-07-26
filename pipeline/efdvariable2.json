@@ -1,0 +1,27 @@
+{
+	"name": "efdvariable2",
+	"properties": {
+		"activities": [
+			{
+				"name": "length variable",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "length",
+					"value": "20"
+				}
+			}
+		],
+		"variables": {
+			"length": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
